@@ -169,5 +169,164 @@ FROM frecuenta f
 
 - a)
 ```sql
-
+SELECT Album.Title NombreAlbum
+FROM 
+	PlaylistTrack INNER JOIN Playlist ON Playlist.PlaylistId = PlaylistTrack.PlaylistId
+	INNER JOIN Track ON PlaylistTrack.TrackId = Track.TrackId
+	INNER JOIN Album ON Track.AlbumId = Album.AlbumId
+GROUP BY Album.AlbumId
+HAVING
+	COUNT(DISTINCT Playlist.PlaylistId) = (SELECT COUNT(DISTINCT Playlist.PlaylistId) FROM Playlist)
+;
 ```
+
+- b)
+```sql
+WITH view AS (SELECT Artist.Name nombre, COUNT(DISTINCT Album.AlbumId) cantidad
+FROM 
+	PlaylistTrack INNER JOIN Playlist ON Playlist.PlaylistId = PlaylistTrack.PlaylistId
+	INNER JOIN Track ON PlaylistTrack.TrackId = Track.TrackId
+	INNER JOIN Album ON Track.AlbumId = Album.AlbumId
+	INNER JOIN Artist on Artist.ArtistId = Album.ArtistId 
+GROUP BY Artist.ArtistId)
+SELECT nombre, cantidad FROM view WHERE cantidad = (SELECT MIN(cantidad) FROM view);
+```
+
+### 2.4
+
+- a)
+    - AR:
+        $$R ≡ Playlist ⋈ PlaylistTrack ⋈ Track ⋈ Album ⋈ Artist \\
+        π_{Playlist.Name}(R) - π_{Playlist.Name}(σ_{Artist.Name = \textit{“Black Sabbath”} ∨ Artist.Name = \textit{“Chico Buarque”}}(R))
+        $$
+
+    - CRT
+        $$
+        \{t / ∃pl ∈ Playlist ∧ t = pl.Name ∧ [∀plt,tr,al,ar (plt ∈ PlaylistTrack ∧ tr ∈ Track ∧ al ∈ Album ∧ ar ∈ Artist ∧ plt.PlaylistID = pl.PlaylistId ∧ tr.TrackID = plt.TrackID ∧ tr.AlbumID = al.AlbumID ∧ al.ArtistID = ar.ArtistID ⟹ ar.Name ≠ \textit{“Black Sabbath”} ∧ ar.Name ≠  \textit{“Chico Buarque”} )] \}
+        $$
+    - SQL
+        ```sql
+        SELECT DISTINCT Playlist.Name
+        FROM Playlist 
+        WHERE Playlist.PlaylistId NOT IN (SELECT DISTINCT Playlist.PlaylistId
+        FROM 
+            PlaylistTrack INNER JOIN Playlist ON Playlist.PlaylistId = PlaylistTrack.PlaylistId
+            INNER JOIN Track ON PlaylistTrack.TrackId = Track.TrackId
+            INNER JOIN Album ON Track.AlbumId = Album.AlbumId
+            INNER JOIN Artist on Artist.ArtistId = Album.ArtistId 
+        WHERE
+            Artist.Name IN ("Black Sabbath","Chico Buarque"));
+        ```
+- b)
+    - AR:
+        $$
+        R_1 = R_2 ≡ customer ⋈ invoice ⋈ invoiceline ⋈ track \\
+        π_{R_1.customerName,R_1.customerID}(R_1)-π_{R_1.customerName,R_1.customerID}(σ_{R_1.customerID = R_2.customerID ∧ R_1.genreID ≠ R_2.genreID}(R_1 × R_2))
+        $$
+
+    - CRT
+        $$
+        \{t / ∃c ∈ customer ∧ t = c.Name ∧ \\
+        [∀i,i', il,il', t,t' \\
+        (i ∈ invoice ∧ il ∈ invoiceline ∧ t ∈ track ∧ i.customerID = c.customerID ∧ il.invoiceID = i.invoiceID ∧ t.trackID = il.trackID ∧ \\
+        i' ∈ invoice ∧ il' ∈ invoiceline ∧ t' ∈ track ∧ i'.customerID = c'.customerID ∧ il'.invoiceID = i'.invoiceID ∧ t'.trackID = il'.trackID ⟹ \\
+        t.genreID = t'.genreID)]\\\}
+        $$
+    - SQL
+        ```sql
+       SELECT Nombre, Apellido 
+        FROM
+            (SELECT Customer.FirstName Nombre, Customer.LastName Apellido, COUNT(DISTINCT Track.GenreId) Cantidad
+            FROM Customer LEFT JOIN Invoice ON Invoice.CustomerId = Customer.CustomerId
+                LEFT JOIN InvoiceLine ON InvoiceLine.InvoiceId = Invoice.InvoiceId
+                LEFT JOIN Track ON InvoiceLine.TrackId = Track.TrackId
+            GROUP BY Customer.CustomerId)
+        WHERE
+            Cantidad = 1;
+        ```
+
+### 2.5
+
+- a) SQL:
+```sql
+SELECT DISTINCT ACTOR.nombreActor
+FROM ACTOR INNER JOIN PARTICIPA_EN ON ACTOR.idActor =  PARTICIPA_EN.idActor
+    INNER JOIN SERIE ON PARTICIPA_EN.idSerie = SERIE.idSerie
+WHERE 
+    ACTOR.edad > 30 AND SERIE.nombreSerie = "Friends";
+```
+
+- b) SQL:
+```sql
+SELECT Nombre
+FROM
+    (SELECT C.nombreCanal Nombre, COUNT(G.idGenero) Cantidad
+    FROM CANAL C LEFT JOIN TRANSMITE T ON C.idCanal = T.idCanal
+        LEFT JOIN SERIE S ON S.idSerie = T.idSerie
+        LEFT JOIN GENERO G ON G.idGenero = S.idGenero
+    WHERE 
+        G.nombreGenero = "Comedia"
+    GROUP BY C.idCanal, C.nombreCanal)
+WHERE
+    Cantidad = (SELECT COUNT(DISTINCT s.idSerie) FROM SERIE s INNER JOIN GENERO g ON s.idGenero = g.idGenero WHERE g.nombreGenero = "Comedia" )
+    ;
+```
+
+- c)
+```sql
+SELECT DISTINCT ACTOR.nombreActor
+FROM ACTOR INNER JOIN PARTICIPA_EN ON ACTOR.idActor =  PARTICIPA_EN.idActor
+    INNER JOIN SERIE ON PARTICIPA_EN.idSerie = SERIE.idSerie
+WHERE 
+    ACTOR.edad > 30 AND SERIE.nombreSerie = "Friends" AND 
+    2000 < 
+        (SELECT MAX(s.añoInicio)
+        FROM PARTICIPA_EN en INNER JOIN SERIE s ON en.idSerie = s.idSerie
+        WHERE 
+            en.actorId = ACTOR.actorId        
+        );
+```
+
+- d)
+```sql
+SELECT DISTINCT ACTOR.nombreActor
+FROM ACTOR INNER JOIN PARTICIPA_EN ON ACTOR.idActor =  PARTICIPA_EN.idActor
+    INNER JOIN SERIE ON PARTICIPA_EN.idSerie = SERIE.idSerie
+WHERE 
+    ACTOR.edad > 30 AND SERIE.nombreSerie = "Friends" AND 
+    2000 >= 
+        (SELECT MAX(s.añoInicio)
+        FROM PARTICIPA_EN en INNER JOIN SERIE s ON en.idSerie = s.idSerie
+        WHERE 
+            en.actorId = ACTOR.actorId        
+        );
+```
+
+- e)
+```sql
+SELECT s.serieId 
+FROM SERIE s
+WHERE 
+    s.añoInicio = 
+    (SELECT MAX(s2.añoInicio) FROM SERIE s2);
+```  
+
+- f)
+```sql
+SELECT id
+FROM
+    (SELECT a.actorId id, COUNT(DISTINCT en.serieId) cantidad
+    FROM ACTOR a INNER JOIN PARTICIPA_EN en ON en.actorId = a.actorId
+    GROUP BY a.actorId)
+WHERE cantidad > 1;
+```  
+
+- g)
+```sql
+SELECT nombre
+FROM
+    (SELECT s.nombreSerie nombre, COUNT(DISTINCT s.serieId) cantidad
+    FROM SERIE s
+    GROUP BY s.nombreSerie)
+WHERE cantidad > 1;
+```  
