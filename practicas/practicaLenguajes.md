@@ -330,3 +330,60 @@ FROM
     GROUP BY s.nombreSerie)
 WHERE cantidad > 1;
 ```  
+
+- h)
+```sql
+WITH seriesRepetidas AS
+    (SELECT nombre
+    FROM
+        (SELECT s.nombreSerie nombre, COUNT(DISTINCT s.serieId) cantidad
+        FROM SERIE s
+        GROUP BY s.nombreSerie)
+    WHERE cantidad > 1)
+SELECT DISTINCT c.nombreCanal
+FROM CANAL c INNER JOIN TRANSMITE t ON t.idCanal = c.idCanal
+    INNER JOIN SERIE s ON s.idSerie = t.idSerie
+WHERE
+    s.nombreSerie IN (seriesRepetidas);
+
+```
+
+- i)
+```sql
+SELECT nombre, MAX(edadPromedio)
+FROM
+    (SELECT s.nombreSerie nombre, AVG(a.edad) edadPromedio
+    FROM SERIE s LEFT JOIN PARTICIPA_EN en ON s.idSerie = en.idSerie
+        LEFT JOIN ACTOR a ON a.idActor = en.idActor
+    GROUP BY s.idSerie,s.nombreSerie);
+```
+
+- j)
+```sql
+SELECT g.nombreGenero
+FROM (SELECT idActor,MIN(edad) FROM ACTOR) j
+    LEFT JOIN PARTICIPA_EN en ON en.idActor = j.idActor
+    LEFT JOIN SERIE s ON en.idSerie = s.idSerie
+    LEFT JOIN GENERO g ON g.idGenero = s.idGenero;
+```
+
+### 2.6
+
+- a) AR:
+    - i) 
+        $$
+        R₁ ≡ ρ(equipo1→equipo,π_{equipo1,torneo}) \\
+        R₂ ≡ ρ(equipo2→equipo,π_{equipo2,torneo}) \\
+        f(e₁,e₂) ≡ e₁ ⋈_{e₁.equipo = e₂.equipo ∧ e₁.torneo ≠ e₂.torneo} e2 \\
+        g(e₁,e₂,e₃) ≡ f(e₁,e₂) ⋈_{e₁.equipo = e₃.equipo ∧ e₁.torneo ≠ e₃.torneo ∧ e₂.torneo ≠ e₃.torneo} e₃ \\
+        Res₁ =  f(R₁, R₂) ∪ f(R₂, R₂) ∪ f(R₁,R₁) \qquad\text{Jugaron al menos dos} \\
+        Res₂ =  ∪_{i,j,k ∈ 1,2}g(Rᵢ,Rⱼ,Rₖ) \qquad\text{Jugaron al menos tres} \\
+        π_{equipo}(Res₁) - π_{equipo}(Res₂)
+        $$
+    - ii) no.
+
+- b) SQL
+    - i)
+        ```sql
+        SELECT e.equipo
+        ```
