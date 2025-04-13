@@ -498,3 +498,18 @@ GROUP BY i.idItem;
 ```
 
 - b)
+$$
+ρ(res,π_{idItem}(Items) - π_{idItem}(Items) ∩  π_{idItem}(Historia))
+$$
+
+- c)
+$$
+\{ t / (∃i ∈ items ∧ itemMayorPrecioActual(i) ∧ ∃ph ∈ Historia ∧ ph.idItem = i.idItem ∧ [∀ph' ∈ Historia (ph'.idItem = i.idItem ⟹ ph'.precio ≤ ph.precio)] ∧ t = (ph.idItem,ph.precio)) \\
+\newline
+∨
+\newline
+(∃i ∈ items ∧ itemMayorPrecioActual(i) ∧ [∄ph (ph∈ Historia ∧ ph.idItem = i.idItem)] ∧ t = (i.idItem,i.precioActual))
+\}
+\\
+itemMayorPrecioActual(i) = ∀j ∈ items (j.idItem ≠ i.idItem ⟹ j.precioActual ≤ i.precioActual)
+$$
