@@ -385,5 +385,116 @@ FROM (SELECT idActor,MIN(edad) FROM ACTOR) j
 - b) SQL
     - i)
         ```sql
-        SELECT e.equipo
+        SELECT equipo
+        FROM (
+            SELECT e.equipo1 equipo, COUNT(DISTINCT e.torneo) nTorneos
+            FROM PARTIDO e
+            WHERE
+                e.goles1 >= e.goles2
+            GROUP BY e.equipo1 
+        )
+        WHERE 
+            nTorneos >= 2
         ```
+    - ii)
+        ```sql
+        WITH torneoPuntos AS 
+        (
+            SELECT torneo, equipo1 equipo, SUM(puntos1) puntos
+            FROM PARTIDO
+            GROUP BY torneo,equipo1 
+        )
+        WITH maxPuntos AS
+        (
+            SELECT torneo, MAX(puntos) puntos
+            FROM torneoPuntos
+            GROUP BY torneo
+        )
+        SELECT DISTINCT torneo
+        FROM 
+            (SELECT tp.torneo torneo, COUNT(DISTINCT tp.equipo) nEquipos
+            FROM torneoPuntos tp LEFT JOIN maxPuntos mp ON tp.torneo = mp.torneo 
+            WHERE 
+                tp.puntos = mp.puntos
+            GROUP BY torneo)
+        WHERE
+            nEquipos > 1;
+        ```
+
+### 2.7
+
+- a)
+Asumo que los matrimonios estan repetidos dos veces para nombre1 y nombre2 y luego nombre2 y nombre1
+```sql
+WITH MatrConHijos AS
+(
+    SELECT m.nombre1 nombre1,m.nombre2 nombre2,m.fecha_realizacion fecha_realizacion,m.fecha_fin fecha_fin 
+    FROM MATRIMONIO m INNER JOIN PERSONA p ON p.nombre_padre = m.nombre1 AND p.nombre_madre = m.nombre2
+    WHERE
+        p.fecha_nac BETWEEN m.fecha_realizacion AND m.fecha_fin
+)
+WITH PrimerMatr AS 
+(
+    SELECT nombre1 nombre, MIN(fecha_realizacion) fecha_realizacion, MIN(fecha_fin) fecha_fin
+    FROM MATRIMONIO
+    GROUP BY nombre1
+) 
+SELECT DISTINCT pm.nombre
+FROM MatrConHijos mch INNER JOIN PrimerMatr pm ON mch.nombre1 = pm.nombre AND pm.fecha_realizacion = mch.fecha_realizacion AND pm.fecha_fin = mch.fecha_fin
+```
+
+- b)
+$$
+\{
+    t/ ∃p ∈ persona ∧ t = p.nombre ∧ \\
+    [∀m∈ matrimonio (m.fechaRealizacion<p.fechaNac<m.fechaFin ⟹ m.nombre1 ≠ p.nombrePadre ∨ m.nombre2 ≠ p.nombreMadre)]
+
+\}
+$$
+
+- c)
+$$
+ρ(hm, persona ⋈_{nombreMadre = nombre1 ∧ nombrePadre = nombre2 ∧ fechaNac < fecha_fin ∧ fechaRealizacion < fechaNac} matrimonio) \\
+
+ρ(hm2, hm) \quad \text{Ademas renombro todos los campos para que terminen con un 2} \\
+ρ(otrosH, hm ⋈_{nombre1 = nombre12 ∧ nombre2 = nombre22 ∧ fechaRealizacion = fechaRealizacion2 ∧ fechaFin = fechaFin2 ∧  fechaNac > fechaNac2} hm2) \\
+ρ(Res, π_{nombre}(hm) - π_{nombre}(otrosH))
+$$
+
+### 2.8
+
+- a) no
+
+- b)
+$$
+ρ(p1,persona) \\
+ρ(p2,persona) \quad \text{Agrego un ' al final de todos los campos} \\
+
+ρ(amigos,amigo ⋈_{nombrePersona1 = nombrePersona} p1 ⋈_{nombrePersona2 = nombrePersona'} p2 ) \\
+
+ρ(amigosNoCumplen, σ_{edad' < 18 ∨ genero = genero'}(amigos)) \\
+
+ρ(Res, π_{nombrePersona}(persona)-π_{nombrePersona}(amigosNoCumplen))
+
+$$
+
+- c)
+$$
+\{ t/ ∃p ∈ persona ∧ t = p ∧ \\
+[∀amg ∈ amigo (p.nombrePersona = amg.nombrePersona1 ⟹ \\ 
+∃m ∈ miembro ∧ m.nombrePersona = amg.nombrePersona2 ∧ ∃g ∈ grupo ∧ m.nombreGrupo = g.nombreGrupo ∧ g.fechaInicio > "1/12/2001")]
+\}
+$$
+
+### 2.9
+
+- a)
+```sql
+SELECT i.idItem, AVG(precio)
+FROM Historia h INNER JOIN Items i ON i.idItem = h.idItem
+WHERE
+    categoriaId = 1 AND fecha_guardado <= DATE '1999-07-01'
+GROUP BY i.idItem;
+```
+
+- b)
