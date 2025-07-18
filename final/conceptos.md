@@ -185,14 +185,20 @@
 - Valor
 #### Open data
 - Acceso abierto si
-    - Datos completos
-    - De primera fuente
-    - A tiempo
-    - Accesibles
-    - Procesables por computadoras
-    - No discriminatorios
-    - No propietario
-    - Sin licencia
+    - Gratuito
+    - De libre uso
+    - Integral
+    - Oportuno
+    - No discriminatorio
+    - Primario
+    - Permanente
+    - Legible por máquinas
+- Nivel de apertura
+    1. Datos no estructurados
+    2. Datos estructurados
+    3. Formatos de uso libre
+    4. Interconección de datos
+    5. Vinculación de datos para proveer contexto
 #### Gobierno de datos
 - Niveles de madurez
     - Indisciplinado
