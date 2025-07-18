@@ -1,3 +1,5 @@
+# Final 1
+
 1 - Normalización
 
 Una tabla está en Primera Forma Normal (1NF) si contiene al menos una clave primaria.
@@ -142,4 +144,157 @@ FALSO. Afecta directamente. Si una vista hace referencia a una columna que fue e
 
 Las vistas se utilizan para simplificar consultas complejas y para implementar seguridad a nivel de fila/columna.
 VERDADERO. Permiten encapsular la lógica de JOINs y cálculos complejos en un objeto simple. Además, se puede conceder permiso a un usuario sobre una vista (que solo muestra ciertas columnas o filas) sin darle acceso a las tablas base completas.
+
+# Final 2
+
+1 - Claves y Restricciones (Constraints)
+
+Una Clave Externa (FOREIGN KEY) siempre debe apuntar a la Clave Primaria (PRIMARY KEY) de otra tabla.
+
+Una restricción UNIQUE en una columna permite múltiples valores NULL.
+
+La restricción CHECK se puede usar para validar que un valor de una columna esté en un rango determinado (ej: edad > 18).
+
+Eliminar una tabla (DROP TABLE) también elimina automáticamente todos los índices y restricciones asociados a ella.
+
+2 - Lenguajes de SQL (DDL, DML, DCL)
+
+TRUNCATE TABLE es una operación DML (Lenguaje de Manipulación de Datos) porque modifica datos.
+
+GRANT y REVOKE son comandos DDL (Lenguaje de Definición de Datos).
+
+Una operación DELETE FROM mi_tabla (sin WHERE) es funcionalmente idéntica a TRUNCATE TABLE mi_tabla en todos los aspectos.
+
+Usar ALTER TABLE para añadir una columna con un valor por defecto NOT NULL a una tabla muy grande es una operación instantánea y no bloquea la tabla.
+
+3 - Funciones de Agregación y Agrupamiento
+
+La cláusula HAVING filtra las filas antes de que se realice la agrupación con GROUP BY.
+
+COUNT(columna) y COUNT(*) siempre devuelven el mismo número.
+
+No es posible usar más de una función de agregación en la misma consulta SELECT.
+
+Si una consulta incluye una cláusula GROUP BY, todas las columnas en la lista del SELECT deben ser o bien parte de la cláusula GROUP BY o bien estar dentro de una función de agregación.
+
+4 - Bases de Datos NoSQL
+
+Las bases de datos NoSQL son la mejor opción cuando el requerimiento principal es la consistencia fuerte de los datos (ACID).
+
+Las bases de datos orientadas a documentos, como MongoDB, almacenan los datos en un formato similar a JSON, lo que permite esquemas flexibles.
+
+El modelo de datos "clave-valor" es ideal para representar relaciones complejas con múltiples JOINs.
+
+"Escalabilidad vertical" (aumentar la potencia de un solo servidor) es el principal método de escalado en la mayoría de los sistemas NoSQL.
+
+5 - Optimización y Rendimiento
+
+El plan de ejecución (EXPLAIN PLAN) es una herramienta que muestra cómo la base de datos ejecutará internamente una consulta.
+
+Realizar un "Full Table Scan" (recorrer la tabla completa) es siempre menos performante que usar un índice.
+
+Las variables de enlace (bind variables) o consultas parametrizadas ayudan a prevenir la inyección SQL y permiten al motor de base de datos reutilizar planes de ejecución.
+
+Almacenar imágenes o archivos grandes directamente en la base de datos (en campos tipo BLOB) es generalmente más eficiente que almacenar solo la ruta al archivo en el sistema de archivos.
+
+6 - Conceptos Avanzados
+
+Un disparador (TRIGGER) es una operación que un usuario debe ejecutar manualmente para que se active.
+
+Los Procedimientos Almacenados (Stored Procedures) se ejecutan en el cliente y ayudan a reducir el tráfico de red enviando múltiples comandos SQL al servidor.
+
+En el modelado de datos, una relación de muchos a muchos (N:M) entre dos entidades se resuelve creando una tercera tabla, conocida como tabla de unión o intermedia.
+
+Las funciones de ventana (Window Functions) como ROW_NUMBER() o LAG() operan sobre un conjunto de filas (la "ventana") y pueden devolver un valor para cada fila basado en ese conjunto, sin colapsar el resultado como lo hace GROUP BY.
+
+Respuestas
+1 - Claves y Restricciones (Constraints)
+
+Una Clave Externa (FOREIGN KEY) siempre debe apuntar a la Clave Primaria (PRIMARY KEY) de otra tabla.
+FALSO. Si bien es la práctica más común y recomendada, una Clave Externa también puede apuntar a una columna (o conjunto de columnas) que tenga una restricción UNIQUE en la otra tabla.
+
+Una restricción UNIQUE en una columna permite múltiples valores NULL.
+VERDADERO. La mayoría de los motores de bases de datos (como PostgreSQL y SQL Server) permiten múltiples valores NULL en una columna con restricción UNIQUE, ya que NULL no es igual a ningún otro valor, ni siquiera a otro NULL. (Excepción: Oracle trata los NULL de manera diferente en este contexto).
+
+La restricción CHECK se puede usar para validar que un valor de una columna esté en un rango determinado (ej: edad > 18).
+VERDADERO. Esa es precisamente una de las finalidades de la restricción CHECK: asegurar que los valores de una columna cumplan una condición booleana específica.
+
+Eliminar una tabla (DROP TABLE) también elimina automáticamente todos los índices y restricciones asociados a ella.
+VERDADERO. Al eliminar una tabla, se elimina el objeto completo y todos los objetos dependientes de ella, como índices, restricciones (PRIMARY KEY, FOREIGN KEY, CHECK, UNIQUE), y disparadores (triggers).
+
+2 - Lenguajes de SQL (DDL, DML, DCL)
+
+TRUNCATE TABLE es una operación DML (Lenguaje de Manipulación de Datos) porque modifica datos.
+FALSO. TRUNCATE es una operación DDL (Lenguaje de Definición de Datos). Aunque elimina datos, lo hace de una forma muy diferente a DELETE. No se puede deshacer fácilmente (ROLLBACK), no dispara triggers de borrado y es mucho más rápida porque libera las páginas de datos directamente.
+
+GRANT y REVOKE son comandos DDL (Lenguaje de Definición de Datos).
+FALSO. Son comandos DCL (Lenguaje de Control de Datos), ya que se utilizan para administrar permisos y accesos de los usuarios, no para definir la estructura de los objetos de la base de datos.
+
+Una operación DELETE FROM mi_tabla (sin WHERE) es funcionalmente idéntica a TRUNCATE TABLE mi_tabla en todos los aspectos.
+FALSO. DELETE es DML, elimina fila por fila, dispara triggers, genera una entrada en el log de transacciones por cada fila y se puede revertir (ROLLBACK). TRUNCATE es DDL, es más rápido, no dispara triggers de borrado y resetea los contadores de identidad (en la mayoría de los motores).
+
+Usar ALTER TABLE para añadir una columna con un valor por defecto NOT NULL a una tabla muy grande es una operación instantánea y no bloquea la tabla.
+FALSO. Tradicionalmente, esta operación requería reescribir la tabla entera y podía ser muy lenta y bloqueante. Aunque algunos motores de bases de datos modernos tienen optimizaciones para hacerla más rápida (guardando el cambio solo en los metadatos), no se puede garantizar que sea instantánea y no bloqueante en todos los casos y versiones.
+
+3 - Funciones de Agregación y Agrupamiento
+
+La cláusula HAVING filtra las filas antes de que se realice la agrupación con GROUP BY.
+FALSO. La cláusula WHERE filtra las filas antes del agrupamiento. HAVING se usa para filtrar los grupos ya formados por GROUP BY, basándose en el resultado de las funciones de agregación.
+
+COUNT(columna) y COUNT(*) siempre devuelven el mismo número.
+FALSO. COUNT(*) cuenta todas las filas del grupo o tabla. COUNT(columna) cuenta solo las filas donde el valor de columna no es NULL.
+
+No es posible usar más de una función de agregación en la misma consulta SELECT.
+FALSO. Es totalmente posible y muy común. Ejemplo: SELECT AVG(precio), SUM(stock) FROM productos;
+
+Si una consulta incluye una cláusula GROUP BY, todas las columnas en la lista del SELECT deben ser o bien parte de la cláusula GROUP BY o bien estar dentro de una función de agregación.
+VERDADERO. Esta es la regla fundamental del GROUP BY. Para cada grupo, la base de datos necesita saber cómo calcular un valor único para cada columna seleccionada. Si la columna está en GROUP BY, su valor es el mismo para todo el grupo. Si no, debe ser el resultado de una agregación (como la suma, el promedio, etc.).
+
+4 - Bases de Datos NoSQL
+
+Las bases de datos NoSQL son la mejor opción cuando el requerimiento principal es la consistencia fuerte de los datos (ACID).
+FALSO. Las bases de datos relacionales (SQL) son el estándar para la consistencia ACID. Las NoSQL a menudo priorizan la disponibilidad y la escalabilidad, adoptando un modelo de consistencia eventual (BASE: Basically Available, Soft state, Eventual consistency).
+
+Las bases de datos orientadas a documentos, como MongoDB, almacenan los datos en un formato similar a JSON, lo que permite esquemas flexibles.
+VERDADERO. Utilizan documentos (como BSON en MongoDB) que no requieren que todos los registros tengan la misma estructura, facilitando la evolución del esquema de datos.
+
+El modelo de datos "clave-valor" es ideal para representar relaciones complejas con múltiples JOINs.
+FALSO. El modelo clave-valor es extremadamente simple y rápido para búsquedas directas por clave, pero no está diseñado para manejar relaciones complejas. Los modelos de grafos o relacionales son mucho mejores para eso.
+
+"Escalabilidad vertical" (aumentar la potencia de un solo servidor) es el principal método de escalado en la mayoría de los sistemas NoSQL.
+FALSO. El principal atractivo de los sistemas NoSQL es la "escalabilidad horizontal" (o escalar hacia afuera), que consiste en distribuir la carga y los datos a través de múltiples servidores más económicos.
+
+5 - Optimización y Rendimiento
+
+El plan de ejecución (EXPLAIN PLAN) es una herramienta que muestra cómo la base de datos ejecutará internamente una consulta.
+VERDADERO. Muestra los pasos que seguirá el optimizador, como qué índices usará, el tipo de JOINs que realizará y el costo estimado de las operaciones, siendo fundamental para la optimización de consultas.
+
+Realizar un "Full Table Scan" (recorrer la tabla completa) es siempre menos performante que usar un índice.
+FALSO. No siempre. Si la consulta necesita recuperar un gran porcentaje de las filas de la tabla, puede ser más rápido para el motor leer la tabla secuencialmente ("Full Table Scan") que saltar de un lado a otro entre el índice y la tabla.
+
+Las variables de enlace (bind variables) o consultas parametrizadas ayudan a prevenir la inyección SQL y permiten al motor de base de datos reutilizar planes de ejecución.
+VERDADERO. Separan el código SQL de los datos del usuario, lo que neutraliza la inyección SQL. Además, como la consulta SQL es siempre la misma, el motor puede compilar el plan de ejecución una vez y reutilizarlo, mejorando el rendimiento.
+
+Almacenar imágenes o archivos grandes directamente en la base de datos (en campos tipo BLOB) es generalmente más eficiente que almacenar solo la ruta al archivo en el sistema de archivos.
+FALSO. Generalmente es lo contrario. Almacenar BLOBs puede inflar el tamaño de la base de datos, ralentizar los respaldos y la replicación. La práctica recomendada suele ser guardar los archivos en un sistema de archivos o un servicio de almacenamiento de objetos (como Amazon S3) y guardar solo la ruta o URL en la base de datos.
+
+6 - Conceptos Avanzados
+
+Un disparador (TRIGGER) es una operación que un usuario debe ejecutar manualmente para que se active.
+FALSO. Un TRIGGER es un bloque de código que se ejecuta automáticamente en respuesta a un evento específico en una tabla (como un INSERT, UPDATE o DELETE).
+
+Los Procedimientos Almacenados (Stored Procedures) se ejecutan en el cliente y ayudan a reducir el tráfico de red enviando múltiples comandos SQL al servidor.
+FALSO. Se ejecutan en el servidor de la base de datos. Reducen el tráfico de red porque el cliente solo necesita enviar el nombre del procedimiento y sus parámetros, en lugar de un bloque grande de código SQL.
+
+En el modelado de datos, una relación de muchos a muchos (N:M) entre dos entidades se resuelve creando una tercera tabla, conocida como tabla de unión o intermedia.
+VERDADERO. Esta tabla intermedia contiene claves externas que apuntan a las claves primarias de las dos entidades originales, resolviendo así la relación N:M en dos relaciones de uno a muchos (1:N).
+
+Las funciones de ventana (Window Functions) como ROW_NUMBER() o LAG() operan sobre un conjunto de filas (la "ventana") y pueden devolver un valor para cada fila basado en ese conjunto, sin colapsar el resultado como lo hace GROUP BY.
+VERDADERO. Esta es la característica principal y la gran ventaja de las funciones de ventana. Permiten realizar cálculos complejos sobre un subconjunto de filas relacionadas con la fila actual, manteniendo el número total de filas en el resultado.
+
+
+
+
+
+
 
