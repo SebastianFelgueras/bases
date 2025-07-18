@@ -92,7 +92,7 @@
 - Índices
     - Índice Clustered
     - Índice Unclustered
-    - Índice Cluestered
+    - Índice Hash
 - Árboles B+
 #### Partes plan ejecución
 - Interpretación de consulta
