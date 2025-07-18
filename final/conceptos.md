@@ -13,8 +13,6 @@
 - CK
 - SK
 #### Interrelaciones
-- Trampa abanico
-- Trampa sumidero
 - Integridad referencial
 #### Anomalías
 - Inserción
