@@ -199,4 +199,35 @@
     - Reactivo
     - Proactivo
     - Gobernado
+#### Arquitectura de datos
+- Buena si
+    - Colaborativa
+    - Administrada
+    - Simple
+    - Elástica
+    - Segura
+    - Resiliente
+#### Data warehouse
+- ETL
+- Datos
+    - Subject-oriented
+    - Integrated
+    - Time-variant
+    - Non-volatile
+- Metadata
+- Carga incremental
+#### Seguridad
+- Pilares
+    - Integridad
+    - Confidencialidad
+    - Disponibilidad
+- Seguridad física 
+- Inyección SQL
+- Medidas estrictamente de BD
+    - Autenticación, usuarios y roles
+    - Trazabilidad
+    - Cifrado
+    - Views
+    - Grant y Revoke
+
 #### Ley nacional de protección de datos personales
