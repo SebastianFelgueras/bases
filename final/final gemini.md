@@ -607,3 +607,131 @@ Verdadero. La variedad se refiere a la heterogeneidad de las fuentes y tipos de 
 
 ---
 
+
+# Final 6 Gemini
+
+#### **Categoría 1: SQL General**
+1.  **Verdadero o Falso:** SQL es un lenguaje de programación declarativo, donde se especifica *qué* se quiere obtener y no *cómo* obtenerlo.
+2.  **Verdadero o Falso:** `SELECT * FROM tabla;` es una práctica recomendada en sistemas de producción por su simplicidad y eficiencia.
+3.  **Verdadero o Falso:** Todo comando SQL debe terminar obligatoriamente con un punto y coma (;) para poder ser ejecutado por el motor de la base de datos.
+4.  **Verdadero o Falso:** SQL es un estándar, por lo que una consulta escrita para PostgreSQL funcionará sin ninguna modificación en SQL Server o MySQL.
+
+#### **Categoría 2: Diseño de Tablas y Claves**
+5.  **Verdadero o Falso:** Una tabla puede tener múltiples claves primarias (Primary Keys).
+6.  **Verdadero o Falso:** Una clave foránea (Foreign Key) debe apuntar siempre a una clave primaria de otra tabla.
+7.  **Verdadero o Falso:** Es posible definir una clave primaria compuesta por más de una columna.
+8.  **Verdadero o Falso:** El propósito de una restricción `UNIQUE` es idéntico al de una `PRIMARY KEY`.
+
+#### **Categoría 3: Manejo de NULLs**
+9.  **Verdadero o Falso:** La comparación `NULL = NULL` devuelve VERDADERO.
+10. **Verdadero o Falso:** La función de agregación `COUNT(*)` cuenta las filas que contienen valores nulos, mientras que `COUNT(columna)` no los cuenta.
+11. **Verdadero o Falso:** Una columna definida como `NOT NULL` puede contener una cadena de texto vacía ('').
+12. **Verdadero o Falso:** La cláusula `IS NULL` es la única forma estándar de verificar si un valor en una columna es nulo.
+
+#### **Categoría 4: Lenguaje de Manipulación de Datos (DML)**
+13. **Verdadero o Falso:** El comando `UPDATE` puede modificar varias filas en una sola ejecución si la condición del `WHERE` coincide con más de un registro.
+14. **Verdadero o Falso:** `DELETE FROM tabla;` y `TRUNCATE TABLE tabla;` son funcionalmente idénticos y ambos se pueden revertir (rollback) dentro de una transacción.
+15. **Verdadero o Falso:** El comando `INSERT` solo permite insertar una fila a la vez.
+16. **Verdadero o Falso:** El comando `MERGE` (o `UPSERT` en algunos dialectos) permite realizar una operación de inserción o actualización dependiendo de si la fila ya existe.
+
+#### **Categoría 5: Lenguaje de Definición de Datos (DDL)**
+17. **Verdadero o Falso:** El comando `ALTER TABLE` permite añadir, eliminar o modificar columnas en una tabla existente sin necesidad de borrarla.
+18. **Verdadero o Falso:** `DROP TABLE` elimina la estructura y los datos de la tabla, mientras que `DROP DATABASE` elimina la base de datos completa.
+19. **Verdadero o Falso:** Las operaciones DDL como `CREATE TABLE` son transaccionales y se pueden revertir con un `ROLLBACK`.
+20. **Verdadero o Falso:** Un `VIEW` (vista) almacena una copia física de los datos de la consulta que la define.
+
+#### **Categoría 6: Propiedades ACID y Transacciones**
+21. **Verdadero o Falso:** La propiedad de **Atomicidad** asegura que una transacción se ejecuta completamente o no se ejecuta en absoluto.
+22. **Verdadero o Falso:** La **Consistencia** garantiza que una transacción solo puede llevar la base de datos de un estado válido a otro.
+23. **Verdadero o Falso:** El **Aislamiento** (Isolation) se refiere a que la base de datos debe estar físicamente aislada de la red para su seguridad.
+24. **Verdadero o Falso:** La **Durabilidad** asegura que, una vez que una transacción ha sido confirmada (`COMMIT`), sus cambios persistirán incluso si hay una falla del sistema.
+
+#### **Categoría 7: JOINs y Relaciones**
+25. **Verdadero o Falso:** Un `INNER JOIN` entre dos tablas devolverá todas las filas de la tabla izquierda, coincidan o no con la tabla derecha.
+26. **Verdadero o Falso:** Un `FULL OUTER JOIN` devuelve todas las filas de ambas tablas, rellenando con `NULL` donde no hay correspondencia.
+27. **Verdadero o Falso:** Es posible hacer un `JOIN` de una tabla consigo misma (Self Join).
+28. **Verdadero o Falso:** `CROSS JOIN` es un tipo de `JOIN` que requiere una condición de enlace en la cláusula `ON`.
+
+#### **Categoría 8: Funciones de Agregación y Agrupamiento**
+29. **Verdadero o Falso:** La cláusula `HAVING` se utiliza para filtrar filas antes de que se realice la agrupación con `GROUP BY`.
+30. **Verdadero o Falso:** Toda columna que aparece en el `SELECT` debe aparecer también en el `GROUP BY`, a menos que se le aplique una función de agregación.
+31. **Verdadero o Falso:** `SUM`, `AVG`, `MAX`, `MIN` y `COUNT` son las únicas funciones de agregación disponibles en el estándar SQL.
+32. **Verdadero o Falso:** Se puede usar `GROUP BY` sobre múltiples columnas.
+
+#### **Categoría 9: Big Data y NoSQL**
+33. **Verdadero o Falso:** Las bases de datos NoSQL son una buena opción para aplicaciones que requieren un esquema flexible o inexistente.
+34. **Verdadero o Falso:** El teorema CAP establece que un sistema distribuido puede garantizar simultáneamente consistencia, disponibilidad y tolerancia a particiones.
+35. **Verdadero o Falso:** Las bases de datos orientadas a documentos, como MongoDB, almacenan los datos en un formato similar a JSON.
+36. **Verdadero o Falso:** "Velocidad", una de las 'V' de Big Data, se refiere exclusivamente a la rapidez con la que se pueden consultar los datos.
+
+#### **Categoría 10: Seguridad y Legislación de Datos**
+37. **Verdadero o Falso:** La inyección SQL es un ataque que puede prevenirse completamente validando únicamente los datos numéricos de entrada del usuario.
+38. **Verdadero o Falso:** El comando `GRANT` se utiliza en SQL para asignar permisos a los usuarios, mientras que `REVOKE` se usa para quitarlos.
+39. **Verdadero o Falso:** En Argentina, la Ley de Protección de Datos Personales (Ley 25.326) establece que el consentimiento del titular de los datos es casi siempre necesario para poder tratar su información.
+40. **Verdadero o Falso:** El "derecho al olvido" implica que una empresa debe borrar todos los registros de un usuario si este lo solicita, sin importar si existen obligaciones legales para conservarlos.
+
+---
+
+### **Respuestas Correctas**
+
+**Categoría 1: SQL General**
+1.  **Verdadero.** Se especifica el resultado deseado, no los pasos algorítmicos para conseguirlo.
+2.  **Falso.** Es una mala práctica. Se debe especificar solo las columnas necesarias para mejorar el rendimiento y la claridad.
+3.  **Falso.** En muchos clientes y herramientas de bases de datos, es una convención, pero no una regla sintáctica obligatoria del estándar SQL para cada motor.
+4.  **Falso.** Aunque SQL es un estándar, existen "dialectos" (T-SQL, PL/SQL, etc.) que tienen funciones y sintaxis propietarias.
+
+**Categoría 2: Diseño de Tablas y Claves**
+5.  **Falso.** Una tabla solo puede tener una clave primaria, aunque esta puede estar formada por varias columnas.
+6.  **Falso.** Puede apuntar a una clave primaria o a una columna (o conjunto de columnas) con una restricción `UNIQUE`.
+7.  **Verdadero.** A esto se le llama clave primaria compuesta y se usa cuando una sola columna no es suficiente para identificar unívocamente una fila.
+8.  **Falso.** Una `PRIMARY KEY` no permite valores `NULL` y solo puede haber una por tabla. Una restricción `UNIQUE` sí permite valores `NULL` (generalmente uno) y puede haber varias por tabla.
+
+**Categoría 3: Manejo de NULLs**
+9.  **Falso.** `NULL` representa la ausencia de un valor, por lo que no es igual a nada, ni siquiera a otro `NULL`. La comparación devuelve `UNKNOWN`, que se trata como falso en las cláusulas `WHERE`.
+10. **Verdadero.** `COUNT(*)` cuenta todas las filas de la tabla, mientras que `COUNT(columna)` cuenta solo las filas donde esa columna específica no tiene un valor nulo.
+11. **Verdadero.** Una cadena vacía es un valor definido (un string de longitud cero), a diferencia de `NULL` que es la ausencia de valor.
+12. **Verdadero.** Para comprobar la nulidad se debe usar `IS NULL` o `IS NOT NULL`, no los operadores de comparación como `=`.
+
+**Categoría 4: Lenguaje de Manipulación de Datos (DML)**
+13. **Verdadero.** La cláusula `WHERE` actúa como un filtro para determinar qué filas serán afectadas por el `UPDATE`.
+14. **Falso.** `DELETE` es una operación DML que se puede revertir y activa triggers. `TRUNCATE` es DDL, no se puede revertir fácilmente (en la mayoría de los motores) y es mucho más rápido porque no registra cada fila eliminada.
+15. **Falso.** La sintaxis `INSERT INTO tabla (col1, col2) VALUES (val1, val2), (val3, val4);` permite insertar múltiples filas.
+16. **Verdadero.** Este comando es muy útil para sincronizar datos entre tablas.
+
+**Categoría 5: Lenguaje de Definición de Datos (DDL)**
+17. **Verdadero.** `ALTER TABLE` es el comando diseñado específicamente para modificar la estructura de una tabla existente.
+18. **Verdadero.** Ambos son comandos DDL destructivos que eliminan objetos de la base de datos.
+19. **Falso.** La mayoría de los motores de bases de datos ejecutan los comandos DDL con un `COMMIT` implícito, por lo que no se pueden revertir con un `ROLLBACK`.
+20. **Falso.** Una vista es una consulta almacenada. No guarda datos físicamente, sino que ejecuta la consulta subyacente cada vez que es llamada (a menos que sea una vista materializada).
+
+**Categoría 6: Propiedades ACID y Transacciones**
+21. **Verdadero.** O todo o nada. Es una garantía fundamental para la integridad de los datos.
+22. **Verdadero.** Las reglas de negocio y las restricciones de integridad (como claves foráneas) se mantienen después de la transacción.
+23. **Falso.** Se refiere a que las transacciones concurrentes no deben interferir entre sí, dando la ilusión de que se ejecutan de forma secuencial.
+24. **Verdadero.** Garantiza que los cambios confirmados sobrevivirán a reinicios o fallas del sistema.
+
+**Categoría 7: JOINs y Relaciones**
+25. **Falso.** Eso lo haría un `LEFT JOIN`. Un `INNER JOIN` solo devuelve las filas que tienen correspondencia en ambas tablas.
+26. **Verdadero.** Combina la funcionalidad de un `LEFT JOIN` y un `RIGHT JOIN`.
+27. **Verdadero.** Es útil para consultar relaciones jerárquicas en una misma tabla (por ejemplo, empleados y sus supervisores).
+28. **Falso.** `CROSS JOIN` genera el producto cartesiano de las dos tablas y no utiliza la cláusula `ON`.
+
+**Categoría 8: Funciones de Agregación y Agrupamiento**
+29. **Falso.** `HAVING` se usa para filtrar grupos *después* de que `GROUP BY` los haya formado. Para filtrar filas antes de la agrupación se usa `WHERE`.
+30. **Verdadero.** Es una regla fundamental del `GROUP BY`. Las columnas en el `SELECT` deben ser parte de la agregación o de la agrupación.
+31. **Falso.** Existen otras funciones estándar como `STDDEV` (desviación estándar) o `VARIANCE`, y muchas más específicas de cada motor.
+32. **Verdadero.** Se puede agrupar por una combinación de columnas, creando grupos basados en los valores únicos de esa combinación.
+
+**Categoría 9: Big Data y NoSQL**
+33. **Verdadero.** La falta de un esquema rígido (schema-less) es una de las principales ventajas de las bases de datos NoSQL.
+34. **Falso.** El teorema CAP (Consistencia, Disponibilidad, Tolerancia a particiones) establece que solo se pueden garantizar dos de estas tres propiedades a la vez.
+35. **Verdadero.** Almacenan objetos BSON (Binary JSON), lo que permite estructuras anidadas y flexibles.
+36. **Falso.** "Velocidad" se refiere a la rapidez con la que los datos son generados y deben ser procesados, no solo a la velocidad de consulta.
+
+**Categoría 10: Seguridad y Legislación de Datos**
+37. **Falso.** La inyección SQL puede ocurrir a través de cualquier tipo de dato de entrada, no solo numérico. Se previene con consultas parametrizadas o prepared statements.
+38. **Verdadero.** Son los comandos estándar de DCL (Data Control Language) para gestionar los privilegios de los usuarios.
+39. **Verdadero.** Es el principio rector de la ley. El tratamiento de datos es ilícito si no se cuenta con el consentimiento libre, expreso e informado del titular.
+40. **Falso.** El derecho al olvido está supeditado a otras obligaciones. Por ejemplo, una empresa debe conservar facturas por obligaciones impositivas, aunque el cliente pida ser borrado.
+
+¡Mucha suerte en tu final! 💪
