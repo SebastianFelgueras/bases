@@ -1,0 +1,50 @@
+Estoy estudiando para un final de baes de datos. Toma un verdadero o falso del estilo del que pego abajo. Generame preguntas de ese estilo pero con las respuestas abajo de todas las preguntas. Quiero que sean 40 preguntas repartidas en diez categorías, 4 por categoría
+Preguntas final
+1 - SQL
+- Es un lenguaje imperativo tipo Java, con estructuras de datos 
+- Es un lenguaje funcional puro 
+- Es un lenguaje orientado a objetos 
+- Es código abierto 
+2 - Tablas
+- Podemos tener una tabla sin PK 
+- Pueden haber registros duplicados 
+- Puede un registro tener todos nulls
+- Una PK es un campo que identifica univocamente a un campo
+3 - NULL en SQL
+- Solo se salva con COALESCE
+- Cualquier operación entre columnas que una tenga un null dará null
+- Cualquier función de agregación sobre una columna que contenga algún null dará null
+- NULL "es equivalente a FALSE"
+4 - Consultas SQL DDL
+- Podemos usar INSERT junto con SELECT
+- Podemos usar DELETE con WHERE
+- Se puede tener una columna con numeros de punto fijo
+- se puede tener una columna con numeros de punto flotante
+5 - ACID
+- Garantizar relaciones de tablas
+- garantiza integridad
+- no tiene fallas
+- permite transacciones con más de una operación
+6 - Tenemos una relación Localidad y Provincia
+- Podemos borrar una provincia sin borrar sus localidades
+- Podemos insertar una localidad con una provincia que no existe
+- Podemos insertar una localidad sin provincia
+- Podemos cambiar la provincia de una localidad existente.
+7 - set ISOLATION LEVEL SERIALIZABLE
+- equivale a una historia serial
+- es el nivel de paralelismo más rápido
+- puede haber deadlocks
+- es la única forma de garantizar ACID.
+8 - Big data
+- no se puede guardar debido a su gran volumen
+- la velocidad con la que llegan los datos no permite procesar nada
+- la estructura de los datos que llegan varía periódicamente
+- se le llama Big data a los datos que se guardan en las herramientas de big data
+9 - En SQL
+- No se puede usar SUM sin GROUP BY
+- En una consulta no se pueden obtener más registros que la cantidad de registros de la tabla más grande
+10 - Legislación de protección de datos en Argentina
+- Prohíbe guardar datos sensibles sin tomar precauciones de seguridad.
+- Prohíbe compartir información sensible con organismos internacionales.
+- Prohíbe a los organismos religiosos guardar información sensible sobre sus miembros.
+- Obliga a las entidades que recolectan datos a otorgar todos los datos que tienen sobre una persona cuando esta se los pide.
