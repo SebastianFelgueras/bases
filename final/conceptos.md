@@ -233,5 +233,4 @@
     - Cifrado
     - Views
     - Grant y Revoke
-
 #### Ley nacional de protección de datos personales
